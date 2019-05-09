@@ -36,8 +36,11 @@ int JMQWriter::OpenFile(string fileout){
     }
     m_fout->precision(9);
     m_fout->setf(ios::left);
-    //(*m_fout)<<"Ray_px\tRay_py\tRay_pz\tedep1\tedep2\tx1\ty1\tz1\tx2\ty2\tz2"<<endl;
-    //(*m_fout)<<"***********************************************************************"<<endl;
+    (*m_fout)<<"Ray_px\tRay_py\tRay_pz\t"<<endl;
+    (*m_fout)<<"edep\thit_x\thit_y\thit_z\t";
+    (*m_fout)<<"hitin_x\thintin_y\thintin_z\t";
+    (*m_fout)<<"hitout_x\thintout_y\thintout_z"<<endl;
+    (*m_fout)<<"***********************************************************************"<<endl;
     return 1;
 }
 
