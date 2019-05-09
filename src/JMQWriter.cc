@@ -50,7 +50,11 @@ void JMQWriter::WriteRayDirection(double px, double py, double pz){
   (*m_fout)<<px<<"\t"<<py<<"\t"<<pz<<endl;
 }
 
-void JMQWriter::WriteEdepAndCenter(int trackID, double edep, double x, double y, double z){
+void JMQWriter::WriteEdepAndCenter(int trackID, double edep, double hit_x, double hit_y, double hit_z,
+                                                             double hitin_x, double hitin_y, double hitin_z,
+                                                             double hitout_x, double hitout_y, double hitout_z){
   (*m_fout)<<trackID<<"\t"<<edep<<"\t";
-  (*m_fout)<<x<<"\t"<<y<<"\t"<<z<<endl;
+  (*m_fout)<<hit_x<<"\t"<<hit_y<<"\t"<<hit_z<<"\t";
+  (*m_fout)<<hitin_x<<"\t"<<hitin_y<<"\t"<<hitin_z<<"\t";
+  (*m_fout)<<hitout_x<<"\t"<<hitout_y<<"\t"<<hitout_z<<endl;
 }

@@ -74,7 +74,9 @@ void JMQSteppingAction::UserSteppingAction(const G4Step* step)
     trackID = gTrack->GetTrackID();
 
     JMQWriter* mWriter = JMQWriter::Instance();
-    mWriter->WriteEdepAndCenter(trackID, edep, hit_position[0], hit_position[1], hit_position[2]);
+    mWriter->WriteEdepAndCenter(trackID, edep, hit_position[0], hit_position[1], hit_position[2],
+                                               point_in[0], point_in[1], point_in[2],
+                                               point_out[0], point_out[1],point_out[2]);
 
 }
 

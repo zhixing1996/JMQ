@@ -42,7 +42,9 @@ class JMQWriter{
 
     void WriteRayDirection(double px, double py, double pz);
 
-    void WriteEdepAndCenter(int trackID, double edep, double x, double y, double z);
+    void WriteEdepAndCenter(int trackID, double edep, double hit_x, double hit_y, double hit_z,
+                                                      double hitin_x, double hitin_y, double hitin_z,
+                                                      double hitout_x, double hitout_y, double hitout_z);
 
     void CloseFile(){m_fout->close();};
 

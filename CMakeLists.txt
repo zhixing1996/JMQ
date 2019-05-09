@@ -45,10 +45,8 @@ target_link_libraries(JMQ ${Geant4_LIBRARIES})
 #
 set(JMQ_SCRIPTS
   JMQ.in
-  JMQ.out
   init_vis.mac
-  run1.mac
-  run2.mac
+  run.mac
   vis.mac
   )
 
@@ -64,7 +62,7 @@ endforeach()
 # For internal Geant4 use - but has no effect if you build this
 # example standalone
 #
-add_custom_target(JMQ DEPENDS JMQ)
+# add_custom_target(JMQ DEPENDS homeworkJMQ)
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
