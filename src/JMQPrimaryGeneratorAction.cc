@@ -68,7 +68,7 @@ void JMQPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   // on DetectorConstruction class we get Envelope volume
   // from G4LogicalVolumeStore.
 
-  G4int n_particle = 100;
+  G4int n_particle = 1;
   fParticleGun  = new G4ParticleGun(n_particle);
 
   // default particle kinematic
@@ -78,31 +78,23 @@ void JMQPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     = particleTable->FindParticle(particleName="gamma");
   fParticleGun->SetParticleDefinition(particle);
 
-  for(G4int i=0;i<n_particle;i++){
-      G4double energy = 0.662*MeV;
-      fParticleGun->SetParticleEnergy(energy);
-      G4cout<<"Check for random number:"<<(-2*G4UniformRand()+1)<<G4endl;
+  G4double energy = 0.662*MeV;
+  fParticleGun->SetParticleEnergy(energy);
+  G4cout<<"Check for random number:"<<(-2*G4UniformRand()+1)<<G4endl;
 
-      G4double size = 500.*mm; 
-      G4double x0 =  0.*mm + (-2*G4UniformRand()+1)*100.*mm;
-      G4double y0 =  0.*mm + (-2*G4UniformRand()+1)*100.*mm;
-      G4double z0 =  -((130.*mm + size) + (-2*G4UniformRand()+1)*100.*mm);
-      
-      fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
+  G4double size = 500.*mm; 
+  G4double x0 =  0.*mm + (-2*G4UniformRand()+1)*100.*mm;
+  G4double y0 =  0.*mm + (-2*G4UniformRand()+1)*100.*mm;
+  G4double z0 =  -((130.*mm + size) + (-2*G4UniformRand()+1)*100.*mm);
+  
+  fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
  
-      // G4double phi = 2*3.1415926*G4UniformRand()/100.;
-      // G4double theta = std::acos((2*G4UniformRand()/100.-1));
-      // G4double dx = std::sin(phi)*std::cos(theta);
-      // G4double dy = std::sin(phi)*std::sin(theta);
-      // G4double dz = std::cos(phi);
+  G4double dx = (-2*G4UniformRand()+1);
+  G4double dy = (-2*G4UniformRand()+1);
+  G4double dz = (-2*G4UniformRand()+1);
 
-      G4double dx = (-2*G4UniformRand()+1);
-      G4double dy = (-2*G4UniformRand()+1);
-      G4double dz = (-2*G4UniformRand()+1);
-
-      fParticleGun->SetParticleMomentumDirection(G4ThreeVector(dx,dy,dz));
-      fParticleGun->GeneratePrimaryVertex(anEvent);
-  }
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(dx,dy,dz));
+  fParticleGun->GeneratePrimaryVertex(anEvent);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
