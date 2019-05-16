@@ -32,13 +32,13 @@
 #define JMQSteppingAction_h 1
 
 #include "JMQSteppingAction.hh"
-#include "JMQWriter.hh"
+#include "JMQParticleWriter.hh"
+#include "JMQStepWriter.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4Step.hh"
 #include "G4ThreeVector.hh"
 #include "G4UserSteppingAction.hh"
 #include "G4SDManager.hh"
-// #include "JMQHit.hh"
 #include "JMQEventAction.hh"
 #include "globals.hh"
 

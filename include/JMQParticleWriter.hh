@@ -11,8 +11,8 @@
 //         Datum plane is the East Endplane of MDC.
 //---------------------------------------------------------------------------//
 
-#ifndef JMQWriter_H
-#define JMQWriter_H 
+#ifndef JMQParticleWriter_H
+#define JMQParticleWriter_H 
 
 #include <iostream>
 #include <fstream>
@@ -27,14 +27,12 @@
 #include "G4UnitsTable.hh"
 #include "G4ThreeVector.hh"
 
-//#include "JMQPixHit.hh"
-
 using namespace std;
 
-class JMQWriter{
+class JMQParticleWriter{
   public:
-    JMQWriter();
-    ~JMQWriter();
+    JMQParticleWriter();
+    ~JMQParticleWriter();
 
     int OpenFile(string fileout);
 
@@ -42,19 +40,15 @@ class JMQWriter{
 
     void WriteRayDirection(double px, double py, double pz);
 
-    void WriteEdepAndCenter(int trackID, double edep, double hit_x, double hit_y, double hit_z,
-                                                      double hitin_x, double hitin_y, double hitin_z,
-                                                      double hitout_x, double hitout_y, double hitout_z);
-
     void CloseFile(){m_fout->close();};
 
-    static JMQWriter* Instance();
+    static JMQParticleWriter* Instance();
 
   private:
     
     ofstream* m_fout;
 
-    static JMQWriter* m_JMQWriter;
+    static JMQParticleWriter* m_JMQParticleWriter;
 };
 
 #endif

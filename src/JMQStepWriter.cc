@@ -10,54 +10,45 @@
 //         The units are "mm" and "rad". 
 //         Datum plane is the East Endplane of MDC.
 //---------------------------------------------------------------------------//
-#include "JMQWriter.hh"
+#include "JMQStepWriter.hh"
 
-JMQWriter::JMQWriter():m_fout(NULL){
-    if(m_JMQWriter){G4cout<<"Wariing::JMQWriter is constructed twice." << G4endl;}
-    m_JMQWriter=this;
+JMQStepWriter::JMQStepWriter():m_fout(NULL){
+    if(m_JMQStepWriter){G4cout<<"Wariing::JMQStepWriter is constructed twice." << G4endl;}
+    m_JMQStepWriter=this;
 }
 
-JMQWriter::~JMQWriter(){
+JMQStepWriter::~JMQStepWriter(){
     if(m_fout) delete m_fout;
 }
 
-JMQWriter* JMQWriter::m_JMQWriter=NULL;
+JMQStepWriter* JMQStepWriter::m_JMQStepWriter=NULL;
 
-JMQWriter* JMQWriter::Instance(){
-    if(!m_JMQWriter) m_JMQWriter = new JMQWriter();
-    return m_JMQWriter;
+JMQStepWriter* JMQStepWriter::Instance(){
+    if(!m_JMQStepWriter) m_JMQStepWriter = new JMQStepWriter();
+    return m_JMQStepWriter;
 }
 
-int JMQWriter::OpenFile(string fileout){
+int JMQStepWriter::OpenFile(string fileout){
     m_fout = new ofstream(fileout.c_str(),ios::out);
     if(m_fout == NULL){
         std::cerr << "Failed to open out file: "<< fileout << std::endl;
         return 0;
     }
-    m_fout->precision(9);
+    m_fout->precision(3);
     m_fout->setf(ios::left);
-    (*m_fout)<<"Ray_px\tRay_py\tRay_pz\t"<<endl;
-    (*m_fout)<<"edep\thit_x\thit_y\thit_z\t";
-    (*m_fout)<<"hitin_x\thintin_y\thintin_z\t";
-    (*m_fout)<<"hitout_x\thintout_y\thintout_z"<<endl;
-    (*m_fout)<<"***********************************************************************"<<endl;
+
+    (*m_fout)<<"edep\thit_x\thit_y\thit_z\thitin_x\thintin_y\thintin_z\thitout_x\thintout_y\thintout_z"<<endl;
+
     return 1;
 }
 
-void JMQWriter::WriteEventTag(int id){
+void JMQStepWriter::WriteEventTag(int id){
   (*m_fout)<<""<<endl;  
   (*m_fout)<<"EventID: "<<id<<endl;    
 }
 
-void JMQWriter::WriteRayDirection(double px, double py, double pz){
-  (*m_fout)<<px<<"\t"<<py<<"\t"<<pz<<endl;
-}
-
-void JMQWriter::WriteEdepAndCenter(int trackID, double edep, double hit_x, double hit_y, double hit_z,
+void JMQStepWriter::WriteEdepAndCenter(int trackID, double edep, double hit_x, double hit_y, double hit_z,
                                                              double hitin_x, double hitin_y, double hitin_z,
                                                              double hitout_x, double hitout_y, double hitout_z){
-  (*m_fout)<<trackID<<"\t"<<edep<<"\t";
-  (*m_fout)<<hit_x<<"\t"<<hit_y<<"\t"<<hit_z<<"\t";
-  (*m_fout)<<hitin_x<<"\t"<<hitin_y<<"\t"<<hitin_z<<"\t";
-  (*m_fout)<<hitout_x<<"\t"<<hitout_y<<"\t"<<hitout_z<<endl;
+  (*m_fout)<<trackID<<"\t"<<edep<<"\t"<<hit_x<<"\t"<<hit_y<<"\t"<<hit_z<<"\t"<<hitin_x<<"\t"<<hitin_y<<"\t"<<hitin_z<<"\t"<<hitout_x<<"\t"<<hitout_y<<"\t"<<hitout_z<<endl;
 }

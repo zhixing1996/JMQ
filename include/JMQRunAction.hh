@@ -36,7 +36,8 @@
 #include <cmath>
 #include <string>
 
-#include "JMQWriter.hh"
+#include "JMQParticleWriter.hh"
+#include "JMQStepWriter.hh"
 
 #include "G4UserRunAction.hh"
 #include "G4Accumulable.hh"
@@ -46,7 +47,8 @@
 #include "G4UnitsTable.hh"
 
 class G4Run;
-class JMQWriter;
+class JMQParticleWriter;
+class JMQStepWriter;
 
 /// Run action class
 ///
@@ -64,11 +66,9 @@ class JMQRunAction : public G4UserRunAction
     virtual void BeginOfRunAction(const G4Run*);
     virtual void EndOfRunAction(const G4Run*);
 
-    void SetOutFileName(std::string fname){m_filename = fname;};
-    std::string GetOutFileName(){return m_filename;};
-
   private:
-    std::string m_filename;
+    std::string m_particle_file;
+    std::string m_step_file;
     double fEdep=0;
     double fEdep2=0;
 };

@@ -36,7 +36,6 @@
 #include "G4ios.hh"
 #include "Randomize.hh"
 
-// #include "JMQHit.hh"
 #include "JMQSteppingAction.hh"
 #include "JMQEventAction.hh"
 #include "JMQDetectorConstruction.hh"
@@ -73,8 +72,8 @@ void JMQSteppingAction::UserSteppingAction(const G4Step* step)
     G4int trackID = 0;
     trackID = gTrack->GetTrackID();
 
-    JMQWriter* mWriter = JMQWriter::Instance();
-    mWriter->WriteEdepAndCenter(trackID, edep, hit_position[0], hit_position[1], hit_position[2],
+    JMQStepWriter* m_StepWriter = JMQStepWriter::Instance();
+    m_StepWriter->WriteEdepAndCenter(trackID, edep, hit_position[0], hit_position[1], hit_position[2],
                                                point_in[0], point_in[1], point_in[2],
                                                point_out[0], point_out[1],point_out[2]);
 

@@ -31,7 +31,6 @@
 #include "JMQRunAction.hh"
 #include "JMQPrimaryGeneratorAction.hh"
 #include "JMQDetectorConstruction.hh"
-// #include "JMQRun.hh"
 
 #include "G4RunManager.hh"
 #include "G4Run.hh"
@@ -58,7 +57,8 @@ JMQRunAction::JMQRunAction()
   new G4UnitDefinition("nanogray" , "nanoGy"  , "Dose", nanogray);
   new G4UnitDefinition("picogray" , "picoGy"  , "Dose", picogray); 
 
-  m_filename = "JMQ.rawdat";
+  m_particle_file = "particle.rawdat";
+  m_step_file = "step.rawdat";
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -78,8 +78,14 @@ void JMQRunAction::BeginOfRunAction(const G4Run* run)
   G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
   accumulableManager->Reset();
 
-  JMQWriter* mWriter = JMQWriter::Instance();
-  if(!mWriter->OpenFile(m_filename)){
+  JMQParticleWriter* m_ParticleWriter = JMQParticleWriter::Instance();
+  if(!m_ParticleWriter->OpenFile(m_particle_file)){
+      std::cout<< "Can NOT open write file!!!" << std::endl;
+      return;
+  };
+
+  JMQStepWriter* m_StepWriter = JMQStepWriter::Instance();
+  if(!m_StepWriter->OpenFile(m_step_file)){
       std::cout<< "Can NOT open write file!!!" << std::endl;
       return;
   };
@@ -96,8 +102,12 @@ void JMQRunAction::EndOfRunAction(const G4Run* run)
         return;
     }
 
-    JMQWriter* mWriter = JMQWriter::Instance();
-    mWriter->CloseFile();
+    JMQParticleWriter* m_ParticleWriter = JMQParticleWriter::Instance();
+    m_ParticleWriter->CloseFile();
+
+    JMQStepWriter* m_StepWriter = JMQStepWriter::Instance();
+    m_StepWriter->CloseFile();
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

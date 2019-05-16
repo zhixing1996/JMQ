@@ -53,13 +53,17 @@ void JMQEventAction::BeginOfEventAction(const G4Event* event)
     G4int eventID = event->GetEventID();
     G4cout << "\n---> Begin of event: " << eventID << G4endl;
 
-    JMQWriter* mWriter = JMQWriter::Instance();
-    mWriter->WriteEventTag(event->GetEventID());
+    JMQParticleWriter* m_ParticleWriter = JMQParticleWriter::Instance();
+    m_ParticleWriter->WriteEventTag(event->GetEventID());
+
+    JMQStepWriter* m_StepWriter = JMQStepWriter::Instance();
+    m_StepWriter->WriteEventTag(event->GetEventID());
+
     for(G4int i=0; i<event->GetNumberOfPrimaryVertex(); i++){
         px = event->GetPrimaryVertex(i)->GetPrimary()->GetPx();
         py = event->GetPrimaryVertex(i)->GetPrimary()->GetPy();
         pz = event->GetPrimaryVertex(i)->GetPrimary()->GetPz();
-        mWriter->WriteRayDirection(px,py,pz);
+        m_ParticleWriter->WriteRayDirection(px,py,pz);
     }
 
 }

@@ -33,8 +33,8 @@
 
 #include "JMQEventAction.hh"
 #include "JMQSteppingAction.hh"
-//#include "JMQHit.hh"
-#include "JMQWriter.hh"
+#include "JMQParticleWriter.hh"
+#include "JMQStepWriter.hh"
 
 #include "G4RunManager.hh"
 #include "G4Event.hh"
