@@ -80,7 +80,6 @@ void JMQPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
   G4double energy = 0.662*MeV;
   fParticleGun->SetParticleEnergy(energy);
-  G4cout<<"Check for random number:"<<(-2*G4UniformRand()+1)<<G4endl;
 
   G4double size = 500.*mm; 
   G4double x0 =  0.*mm + (-2*G4UniformRand()+1)*100.*mm;

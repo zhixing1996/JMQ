@@ -42,13 +42,13 @@
 
 JMQEventAction::JMQEventAction(JMQRunAction* runAction)
 : G4UserEventAction(),
-  edep1(0.), edep2(0.),
-  edep1_x(0.), edep1_y(0.), edep1_z(0.),
-  edep2_x(0.), edep2_y(0.), edep2_z(0.),
-  x_edep1(0.), y_edep1(0.), z_edep1(0.),
-  x_edep2(0.), y_edep2(0.), z_edep2(0.),
-  xc1(0.), yc1(0.), zc1(0.),
-  xc2(0.), yc2(0.), zc2(0.),
+  // edep1(0.), edep2(0.),
+  // edep1_x(0.), edep1_y(0.), edep1_z(0.),
+  // edep2_x(0.), edep2_y(0.), edep2_z(0.),
+  // x_edep1(0.), y_edep1(0.), z_edep1(0.),
+  // x_edep2(0.), y_edep2(0.), z_edep2(0.),
+  // xc1(0.), yc1(0.), zc1(0.),
+  // xc2(0.), yc2(0.), zc2(0.),
   fRunAction(runAction)
 {} 
 
@@ -64,6 +64,12 @@ void JMQEventAction::BeginOfEventAction(const G4Event* event)
 
     G4int eventID = event->GetEventID();
     G4cout << "\n---> Begin of event: " << eventID << G4endl;
+
+    edep1 = 0., edep2 = 0.;
+    edep1_x = 0., edep1_y = 0., edep1_z = 0.;
+    edep2_x = 0., edep2_y = 0., edep2_z = 0.;
+    x_edep1 = 0., y_edep1 = 0., z_edep1 = 0.;
+    x_edep2 = 0., y_edep2 = 0., z_edep2 = 0.;
 
     for(G4int i=0; i<event->GetNumberOfPrimaryVertex(); i++){
         px = event->GetPrimaryVertex(i)->GetPrimary()->GetPx();
@@ -99,20 +105,26 @@ void JMQEventAction::EndOfEventAction(const G4Event* event)
             zc2 = -9999999;
     }
 
-    auto analysisManager = G4AnalysisManager::Instance();
-    analysisManager->FillNtupleDColumn(0, eventID);
-    analysisManager->FillNtupleDColumn(1, edep1);
-    analysisManager->FillNtupleDColumn(2, edep2);
-    analysisManager->FillNtupleDColumn(3, xc1);
-    analysisManager->FillNtupleDColumn(4, yc1);
-    analysisManager->FillNtupleDColumn(5, zc1);
-    analysisManager->FillNtupleDColumn(6, xc2);
-    analysisManager->FillNtupleDColumn(7, yc2);
-    analysisManager->FillNtupleDColumn(8, zc2);
-    analysisManager->FillNtupleDColumn(9, px);
-    analysisManager->FillNtupleDColumn(10, py);
-    analysisManager->FillNtupleDColumn(11, pz);
-    analysisManager->AddNtupleRow();
+   G4cout<<"Check for edep1:"<<edep1<<G4endl;
+   G4cout<<"Check for edep2:"<<edep2<<G4endl;
+    // if (xc1 != -9999999 && yc1 != -9999999 && zc1 != -9999999 &&
+    //     xc2 != -9999999 && yc2 != -9999999 && zc2 != -9999999 &&
+    //     edep1 >0 && edep2>0) {
+        auto analysisManager = G4AnalysisManager::Instance();
+        analysisManager->FillNtupleDColumn(0, eventID);
+        analysisManager->FillNtupleDColumn(1, edep1);
+        analysisManager->FillNtupleDColumn(2, edep2);
+        analysisManager->FillNtupleDColumn(3, xc1);
+        analysisManager->FillNtupleDColumn(4, yc1);
+        analysisManager->FillNtupleDColumn(5, zc1);
+        analysisManager->FillNtupleDColumn(6, xc2);
+        analysisManager->FillNtupleDColumn(7, yc2);
+        analysisManager->FillNtupleDColumn(8, zc2);
+        analysisManager->FillNtupleDColumn(9, px);
+        analysisManager->FillNtupleDColumn(10, py);
+        analysisManager->FillNtupleDColumn(11, pz);
+        analysisManager->AddNtupleRow();
+    // }
 
     G4cout << "\n---> End of event: " << eventID << G4endl;
 

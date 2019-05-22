@@ -74,7 +74,7 @@ JMQRunAction::JMQRunAction()
   analysisManager->CreateNtupleDColumn("head_center_z");
   analysisManager->CreateNtupleDColumn("chest_center_x");
   analysisManager->CreateNtupleDColumn("chest_center_y");
-  analysisManager->CreateNtupleDColumn("particle_center_z");
+  analysisManager->CreateNtupleDColumn("chest_center_z");
   analysisManager->CreateNtupleDColumn("particle_momentum_x");
   analysisManager->CreateNtupleDColumn("particle_momentum_y");
   analysisManager->CreateNtupleDColumn("particle_momentum_z");
