@@ -32,39 +32,36 @@ void analysis()
     t->SetBranchAddress("edep_chest",   &edep_chest);
 
     auto c = new TCanvas("c","c",1200,1080);
-    auto h1 = new TH1F("h1","head_center_x",100,-50,50);
-    auto h2 = new TH1F("h2","head_center_y",100,-50,50);
-    auto h3 = new TH1F("h3","head_center_z",100,-50,50);
-    auto h4 = new TH1F("h4","chest_center_x",100,-50,50);
-    auto h5 = new TH1F("h5","chest_center_y",100,-50,50);
-    auto h6 = new TH1F("h6","chest_center_z",100,-50,50);
-    auto h7 = new TH1F("h7","particle_momentum_x",50,-1,1);
-    auto h8 = new TH1F("h8","particle_momentum_y",50,-1,1);
-    auto h9 = new TH1F("h9","particle_momentum_z",50,-1,1);
-    auto h10 = new TH1F("h10","edep_head",50,0,1);
-    auto h11 = new TH1F("h11","edep_chest",50,0,1);
+    auto h1 = new TH1F("h1","head_center_x",1500,-200,1000);
+    auto h2 = new TH1F("h2","head_center_y",200,340,540);
+    auto h3 = new TH1F("h3","head_center_z",200,-80,80);
+    auto h4 = new TH1F("h4","chest_center_x",600,-200,400);
+    auto h5 = new TH1F("h5","chest_center_y",1000,-400,500);
+    auto h6 = new TH1F("h6","chest_center_z",1200,-500,600);
+    auto h7 = new TH1F("h7","particle_momentum_x",1000,-1,1);
+    auto h8 = new TH1F("h8","particle_momentum_y",1000,-1,1);
+    auto h9 = new TH1F("h9","particle_momentum_z",1000,-1,1);
+    auto h10 = new TH1F("h10","edep_head",50,0,0.7);
+    auto h11 = new TH1F("h11","edep_chest",50,0,0.7);
 
     for (Int_t i=0; i<t->GetEntries(); i++){
         t->GetEntry(i);
-        if (head_center_x!=-9999999&&head_center_y!=-9999999&&head_center_z!=-9999999) {
-           cout<<head_center_x<<endl;
-           h1->Fill(head_center_x);
-           h2->Fill(head_center_y);
-           h3->Fill(head_center_z);
-        }
-        if (chest_center_x!=-9999999&&chest_center_y!=-9999999&&chest_center_z!=-9999999) {
-           h4->Fill(chest_center_x);
-           h5->Fill(chest_center_y);
-           h6->Fill(chest_center_z);
-        }
+        h1->Fill(head_center_x);
+        h2->Fill(head_center_y);
+        h3->Fill(head_center_z);
+        h4->Fill(chest_center_x);
+        h5->Fill(chest_center_y);
+        h6->Fill(chest_center_z);
         h7->Fill(particle_momentum_x);
         h8->Fill(particle_momentum_y);
         h9->Fill(particle_momentum_z);
-        if (edep_head>0&&edep_chest>0) {
+        if (edep_head>0) {
            h10->Fill(edep_head);
-           h11->Fill(edep_chest);
-           cout<<edep_chest<<endl;
         }
+        if (edep_chest>0) {
+           h11->Fill(edep_chest);
+        }
+
     }
     
     gStyle->SetEndErrorSize(3);

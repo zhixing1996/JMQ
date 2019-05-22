@@ -89,7 +89,6 @@ class JMQEventAction : public G4UserEventAction
 inline void JMQEventAction::RecordHead(G4double edep,
                 G4double point_in_x, G4double point_in_y, G4double point_in_z,
                 G4double point_out_x, G4double point_out_y, G4double point_out_z) {
-    G4cout<<"energy deposited in head for each step:"<<edep<<G4endl;
     rx = point_out_x - point_in_x;
     ry = point_out_y - point_in_y;
     rz = point_out_z - point_in_z;
@@ -111,7 +110,6 @@ inline void JMQEventAction::RecordHead(G4double edep,
 inline void JMQEventAction::RecordChest(G4double edep,
                 G4double point_in_x, G4double point_in_y, G4double point_in_z,
                 G4double point_out_x, G4double point_out_y, G4double point_out_z) {
-    G4cout<<"energy deposited in chest for each step:"<<edep<<G4endl;
     rx = point_out_x - point_in_x;
     ry = point_out_y - point_in_y;
     rz = point_out_z - point_in_z;

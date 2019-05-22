@@ -74,7 +74,6 @@ void JMQSteppingAction::UserSteppingAction(const G4Step* step)
     G4ThreeVector point_in  = point_pre->GetPosition();
     G4ThreeVector point_out = point_post->GetPosition();
 
-    G4cout<<"Check for step:"<<edep<<G4endl;
     if ( volume == fDetConstruction->GetHeadPV() ) {
        fEventAction->RecordHead(edep,
                                     point_in[0], point_in[1], point_in[2],
