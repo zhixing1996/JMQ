@@ -31,6 +31,7 @@
 #include "JMQRunAction.hh"
 #include "JMQPrimaryGeneratorAction.hh"
 #include "JMQDetectorConstruction.hh"
+#include "JMQAnalysis.hh"
 
 #include "G4RunManager.hh"
 #include "G4Run.hh"
@@ -45,50 +46,68 @@
 JMQRunAction::JMQRunAction()
 : G4UserRunAction()
 { 
-  // add new units for dose
-  // 
-  const G4double milligray = 1.e-3*gray;
-  const G4double microgray = 1.e-6*gray;
-  const G4double nanogray  = 1.e-9*gray;  
-  const G4double picogray  = 1.e-12*gray;
-   
-  new G4UnitDefinition("milligray", "milliGy" , "Dose", milligray);
-  new G4UnitDefinition("microgray", "microGy" , "Dose", microgray);
-  new G4UnitDefinition("nanogray" , "nanoGy"  , "Dose", nanogray);
-  new G4UnitDefinition("picogray" , "picoGy"  , "Dose", picogray); 
+  // set printing event number per each event
+  G4RunManager::GetRunManager()->SetPrintProgress(1);
 
-  m_particle_file = "particle.rawdat";
-  m_step_file = "step.rawdat";
+  // Create analysis manager
+  // The choice of analysis technology is done via selectin of a namespace
+  // in JMQAnalysis.hh
+  auto analysisManager = G4AnalysisManager::Instance();
+  G4cout << "Using " << analysisManager->GetType() << G4endl;
+
+  // Create directories 
+  //analysisManager->SetHistoDirectoryName("histograms");
+  //analysisManager->SetNtupleDirectoryName("ntuple");
+  analysisManager->SetVerboseLevel(1);
+  analysisManager->SetNtupleMerging(true);
+  // Note: merging ntuples is available only with Root output
+
+  // Book histograms, ntuple
+  
+  // Creating ntuple
+  analysisManager->CreateNtuple("JMQ", "Edep and Hit position");
+  analysisManager->CreateNtupleDColumn("EventID");
+  analysisManager->CreateNtupleDColumn("edep_head");
+  analysisManager->CreateNtupleDColumn("edep_chest");
+  analysisManager->CreateNtupleDColumn("head_center_x");
+  analysisManager->CreateNtupleDColumn("head_center_y");
+  analysisManager->CreateNtupleDColumn("head_center_z");
+  analysisManager->CreateNtupleDColumn("chest_center_x");
+  analysisManager->CreateNtupleDColumn("chest_center_y");
+  analysisManager->CreateNtupleDColumn("particle_center_z");
+  analysisManager->CreateNtupleDColumn("particle_momentum_x");
+  analysisManager->CreateNtupleDColumn("particle_momentum_y");
+  analysisManager->CreateNtupleDColumn("particle_momentum_z");
+  analysisManager->FinishNtuple();
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 JMQRunAction::~JMQRunAction()
-{}
+{
+  delete G4AnalysisManager::Instance();
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void JMQRunAction::BeginOfRunAction(const G4Run* run)
 { 
   G4cout << "### Run " << run->GetRunID() << " start." << G4endl;
+
+  // Get analysis manager
+  auto analysisManager = G4AnalysisManager::Instance();
+  
+  // Open an output file
+  G4String fileName = "JMQ";
+  analysisManager->OpenFile(fileName);
+
   // inform the runManager to save random number seed
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
 
   // reset accumulables to their initial values
   G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
   accumulableManager->Reset();
-
-  JMQParticleWriter* m_ParticleWriter = JMQParticleWriter::Instance();
-  if(!m_ParticleWriter->OpenFile(m_particle_file)){
-      std::cout<< "Can NOT open write file!!!" << std::endl;
-      return;
-  };
-
-  JMQStepWriter* m_StepWriter = JMQStepWriter::Instance();
-  if(!m_StepWriter->OpenFile(m_step_file)){
-      std::cout<< "Can NOT open write file!!!" << std::endl;
-      return;
-  };
 
 }
 
@@ -102,11 +121,9 @@ void JMQRunAction::EndOfRunAction(const G4Run* run)
         return;
     }
 
-    JMQParticleWriter* m_ParticleWriter = JMQParticleWriter::Instance();
-    m_ParticleWriter->CloseFile();
-
-    JMQStepWriter* m_StepWriter = JMQStepWriter::Instance();
-    m_StepWriter->CloseFile();
+    auto analysisManager = G4AnalysisManager::Instance();
+    analysisManager->Write();
+    analysisManager->CloseFile();
 
 }
 

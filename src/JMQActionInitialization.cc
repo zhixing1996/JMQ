@@ -33,11 +33,14 @@
 #include "JMQRunAction.hh"
 #include "JMQEventAction.hh"
 #include "JMQSteppingAction.hh"
+#include "JMQDetectorConstruction.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-JMQActionInitialization::JMQActionInitialization()
- : G4VUserActionInitialization()
+JMQActionInitialization::JMQActionInitialization
+				(JMQDetectorConstruction* detConstruction)
+ : G4VUserActionInitialization(),
+   fDetConstruction(detConstruction)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -65,7 +68,7 @@ void JMQActionInitialization::Build() const
   JMQEventAction* eventAction = new JMQEventAction(runAction);
   SetUserAction(eventAction);
   
-  SetUserAction(new JMQSteppingAction(eventAction));
+  SetUserAction(new JMQSteppingAction(fDetConstruction,eventAction));
 }  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

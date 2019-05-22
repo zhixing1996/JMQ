@@ -32,8 +32,6 @@
 #define JMQSteppingAction_h 1
 
 #include "JMQSteppingAction.hh"
-#include "JMQParticleWriter.hh"
-#include "JMQStepWriter.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4Step.hh"
 #include "G4ThreeVector.hh"
@@ -43,9 +41,8 @@
 #include "globals.hh"
 
 class G4Step;
-class G4TouchableHistory;
-class G4HCofThisEvent;
 class JMQEventAction;
+class JMQDetectorConstruction;
 
 class G4LogicalVolume;
 
@@ -56,7 +53,8 @@ class JMQSteppingAction : public G4UserSteppingAction
 {
   public:
 
-    JMQSteppingAction(JMQEventAction* eventAction);
+    JMQSteppingAction(const JMQDetectorConstruction* detectorConstruction,
+			JMQEventAction* eventAction);
     virtual ~JMQSteppingAction();
 
     // method from the base class
@@ -64,7 +62,7 @@ class JMQSteppingAction : public G4UserSteppingAction
     virtual void UserSteppingAction(const G4Step*);
 
   private:
-    // JMQHitsCollection* hitsCollection;
+    const JMQDetectorConstruction* fDetConstruction;
     JMQEventAction*  fEventAction;
 };
 

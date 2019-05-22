@@ -70,7 +70,8 @@ int main(int argc,char** argv)
   // Set mandatory initialization classes
   //
   // Detector construction
-  runManager->SetUserInitialization(new JMQDetectorConstruction());
+  auto detConstruction = new JMQDetectorConstruction();
+  runManager->SetUserInitialization(detConstruction);
 
   // Physics list
   G4VModularPhysicsList* physicsList = new QBBC;
@@ -78,7 +79,8 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(physicsList);
     
   // User action initialization
-  runManager->SetUserInitialization(new JMQActionInitialization());
+  auto  actionInitialization = new JMQActionInitialization(detConstruction);
+  runManager->SetUserInitialization(actionInitialization);
   
   // Initialize visualization
   //

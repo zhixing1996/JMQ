@@ -33,16 +33,21 @@
 
 #include "G4VUserActionInitialization.hh"
 
+class JMQDetectorConstruction;
+
 /// Action initialization class.
 
 class JMQActionInitialization : public G4VUserActionInitialization
 {
   public:
-    JMQActionInitialization();
+    JMQActionInitialization(JMQDetectorConstruction*);
     virtual ~JMQActionInitialization();
 
     virtual void BuildForMaster() const;
     virtual void Build() const;
+
+  private:
+    JMQDetectorConstruction* fDetConstruction;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

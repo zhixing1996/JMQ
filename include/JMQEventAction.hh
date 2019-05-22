@@ -33,8 +33,6 @@
 
 #include "JMQEventAction.hh"
 #include "JMQSteppingAction.hh"
-#include "JMQParticleWriter.hh"
-#include "JMQStepWriter.hh"
 
 #include "G4RunManager.hh"
 #include "G4Event.hh"
@@ -64,24 +62,73 @@ class JMQEventAction : public G4UserEventAction
     virtual void BeginOfEventAction(const G4Event* event);
     virtual void EndOfEventAction(const G4Event* event);
 
+    void RecordHead(G4double edep, 
+		G4double point_in_x, G4double point_in_y, G4double point_in_z,
+		G4double point_out_x, G4double point_out_y, G4double point_out_z);
+
+    void RecordChest(G4double edep, 
+		G4double point_in_x, G4double point_in_y, G4double point_in_z,
+		G4double point_out_x, G4double point_out_y, G4double point_out_z);
+
   private:
     JMQRunAction* fRunAction;
     G4double px=0, py=0, pz=0;
 //    G4double dx=0, dy=0, dz=0;
-//    G4double rx=0, ry=0, rz=0;
-//    G4double L=0., l=0.;
-//    G4double sin_phi=0, cos_phi=0, sin_theta=0, cos_theta=0;
-//    G4double edep1=0., edep2=0.;
-//    G4double edep1_x=0, edep1_y=0, edep1_z=0;
-//    G4double edep2_x=0, edep2_y=0, edep2_z=0;
-//    G4double xedep1=0, yedep1=0, zedep1=0;
-//    G4double xedep2=0, yedep2=0, zedep2=0;
-//    G4double xc1=0, yc1=0, zc1=0;
-//    G4double xc2=0, yc2=0, zc2=0;
+    G4double rx=0, ry=0, rz=0;
+    G4double L=0., l=0.;
+    G4double sin_phi=0, cos_phi=0, sin_theta=0, cos_theta=0;
+    G4double edep1=0., edep2=0.;
+    G4double edep1_x=0, edep1_y=0, edep1_z=0;
+    G4double edep2_x=0, edep2_y=0, edep2_z=0;
+    G4double x_edep1=0, y_edep1=0, z_edep1=0;
+    G4double x_edep2=0, y_edep2=0, z_edep2=0;
+    G4double xc1, yc1, zc1;
+    G4double xc2, yc2, zc2;
 };
+
+inline void JMQEventAction::RecordHead(G4double edep,
+                G4double point_in_x, G4double point_in_y, G4double point_in_z,
+                G4double point_out_x, G4double point_out_y, G4double point_out_z) {
+    rx = point_out_x - point_in_x;
+    ry = point_out_y - point_in_y;
+    rz = point_out_z - point_in_z;
+    L = std::sqrt(rx*rx+ry*ry+rz*rz);
+    l = std::sqrt(rx*rx+ry*ry);
+    sin_phi = l/L;
+    cos_phi = rz/L;
+    sin_theta = ry/l;
+    cos_theta = rx/l;
+    edep1 += edep;
+    edep1_x += (point_out_x+point_in_x)/2*edep*sin_phi*cos_theta;
+    edep1_y += (point_out_y+point_in_y)/2*edep*sin_phi*sin_theta;
+    edep1_z += (point_out_z+point_in_z)/2*edep*cos_theta;
+    x_edep1 += edep*sin_phi*cos_theta;
+    y_edep1 += edep*sin_phi*sin_theta;
+    z_edep1 += edep*cos_theta;
+}
+
+inline void JMQEventAction::RecordChest(G4double edep,
+                G4double point_in_x, G4double point_in_y, G4double point_in_z,
+                G4double point_out_x, G4double point_out_y, G4double point_out_z) {
+    rx = point_out_x - point_in_x;
+    ry = point_out_y - point_in_y;
+    rz = point_out_z - point_in_z;
+    L = std::sqrt(rx*rx+ry*ry+rz*rz);
+    l = std::sqrt(rx*rx+ry*ry);
+    sin_phi = l/L;
+    cos_phi = rz/L;
+    sin_theta = ry/l;
+    cos_theta = rx/l;
+    edep2 += edep;
+    edep2_x += (point_out_x+point_in_x)/2*edep*sin_phi*cos_theta;
+    edep2_y += (point_out_y+point_in_y)/2*edep*sin_phi*sin_theta;
+    edep2_z += (point_out_z+point_in_z)/2*edep*cos_theta;
+    x_edep2 += edep*sin_phi*cos_theta;
+    y_edep2 += edep*sin_phi*sin_theta;
+    z_edep2 += edep*cos_theta;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-
-    
+ 

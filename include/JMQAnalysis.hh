@@ -23,45 +23,16 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-// $Id: JMQRunAction.hh 99560 2016-09-27 07:03:29Z gcosmo $
+// $Id: JMQAnalysis.hh 100946 2016-11-03 11:28:08Z gcosmo $
 //
-/// \file JMQRunAction.hh
-/// \brief Definition of the JMQRunAction class
+/// \file JMQAnalysis.hh
+/// \brief Selection of the analysis technology
 
-#ifndef JMQRunAction_h
-#define JMQRunAction_h 1
+#ifndef JMQAnalysis_h
+#define JMQAnalysis_h 1
 
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <string>
-
-#include "G4UserRunAction.hh"
-#include "G4Accumulable.hh"
-#include "globals.hh"
-#include "G4Run.hh"
-#include "G4RunManager.hh"
-#include "G4UnitsTable.hh"
-
-class G4Run;
-
-/// Run action class
-///
-/// In EndOfRunAction(), it calculates the dose in the selected volume 
-/// from the energy deposit accumulated via stepping and event actions.
-/// The computed dose is then printed on the screen.
-
-class JMQRunAction : public G4UserRunAction
-{
-  public:
-    JMQRunAction();
-    virtual ~JMQRunAction();
-
-    // virtual G4Run* GenerateRun();
-    virtual void BeginOfRunAction(const G4Run*);
-    virtual void EndOfRunAction(const G4Run*);
-
-};
+#include "g4root.hh"
+//#include "g4cvs.hh"
+//#include "g4xml.hh"
 
 #endif
-

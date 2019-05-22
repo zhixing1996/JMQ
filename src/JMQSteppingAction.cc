@@ -47,8 +47,12 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-JMQSteppingAction::JMQSteppingAction(JMQEventAction* eventAction)
+//JMQSteppingAction::JMQSteppingAction(JMQEventAction* eventAction)
+JMQSteppingAction::JMQSteppingAction(
+			const JMQDetectorConstruction* detectorConstruction,
+			JMQEventAction* eventAction)
 : G4UserSteppingAction(),
+  fDetConstruction(detectorConstruction),
   fEventAction(eventAction)
 {}
 
@@ -61,7 +65,8 @@ JMQSteppingAction::~JMQSteppingAction()
 
 void JMQSteppingAction::UserSteppingAction(const G4Step* step)
 {
-    G4Track* gTrack = step->GetTrack() ;
+    auto volume = step->GetPreStepPoint()->GetTouchableHandle()->GetVolume();
+
     //G4double step_length = step->GetStepLength();
     G4double edep = step->GetTotalEnergyDeposit();
     G4StepPoint* point_pre  = step->GetPreStepPoint() ;
@@ -69,13 +74,18 @@ void JMQSteppingAction::UserSteppingAction(const G4Step* step)
     G4ThreeVector point_in  = point_pre->GetPosition();
     G4ThreeVector point_out = point_post->GetPosition();
     G4ThreeVector hit_position = (point_in+point_out)/2;
-    G4int trackID = 0;
-    trackID = gTrack->GetTrackID();
 
-    JMQStepWriter* m_StepWriter = JMQStepWriter::Instance();
-    m_StepWriter->WriteEdepAndCenter(trackID, edep, hit_position[0], hit_position[1], hit_position[2],
-                                               point_in[0], point_in[1], point_in[2],
-                                               point_out[0], point_out[1],point_out[2]);
+    if ( volume == fDetConstruction->GetHeadPV() ) {
+       fEventAction->RecordHead(edep,
+                                    point_in[0], point_in[1], point_in[2],
+                                    point_out[0], point_out[1],point_out[2]);
+    }
+
+    if ( volume == fDetConstruction->GetChestPV() ) {
+       fEventAction->RecordChest(edep,
+                                    point_in[0], point_in[1], point_in[2],
+                                    point_out[0], point_out[1],point_out[2]);
+    }
 
 }
 

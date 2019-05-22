@@ -35,7 +35,6 @@
 #include "globals.hh"
 
 class G4VPhysicalVolume;
-class G4LogicalVolume;
 
 /// Detector construction class to define materials and geometry.
 
@@ -45,13 +44,24 @@ class JMQDetectorConstruction : public G4VUserDetectorConstruction
     JMQDetectorConstruction();
     virtual ~JMQDetectorConstruction();
 
+  public:
     virtual G4VPhysicalVolume* Construct();
-    
-    G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
 
-  protected:
-    G4LogicalVolume*  fScoringVolume;
+    const G4VPhysicalVolume* GetHeadPV() const;    
+    const G4VPhysicalVolume* GetChestPV() const;    
+
+  private:
+    G4VPhysicalVolume*  fHeadPV;
+    G4VPhysicalVolume*  fChestPV;
 };
+
+inline const G4VPhysicalVolume* JMQDetectorConstruction::GetHeadPV() const {
+  return fHeadPV;
+}
+
+inline const G4VPhysicalVolume* JMQDetectorConstruction::GetChestPV() const {
+  return fChestPV;
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

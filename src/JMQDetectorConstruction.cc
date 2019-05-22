@@ -30,6 +30,18 @@
 
 #include "JMQDetectorConstruction.hh"
 
+#include "G4Material.hh"
+#include "G4NistManager.hh"
+#include "G4AutoDelete.hh"
+
+#include "G4GeometryManager.hh"
+#include "G4PhysicalVolumeStore.hh"
+#include "G4LogicalVolumeStore.hh"
+#include "G4SolidStore.hh"
+
+#include "G4PhysicalConstants.hh"
+#include "G4SystemOfUnits.hh"
+
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
 #include "G4Box.hh"
@@ -48,7 +60,8 @@
 
 JMQDetectorConstruction::JMQDetectorConstruction()
 : G4VUserDetectorConstruction(),
-    fScoringVolume(0)
+    fHeadPV(nullptr),
+    fChestPV(nullptr)
 { }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -112,7 +125,7 @@ G4VPhysicalVolume* JMQDetectorConstruction::Construct()
                         head_mat,             //its material
                         "Head");         //its name
                
-  new G4PVPlacement(0,                       //no rotation
+  fHeadPV = new G4PVPlacement(0,                       //no rotation
                     G4ThreeVector(0., 430.*mm,0.),         //at (0,0,0)
                     logicHead,                //its logical volume
                     "Head",              //its name
@@ -176,7 +189,7 @@ G4VPhysicalVolume* JMQDetectorConstruction::Construct()
                         chest_mat,          //its material
                         "Chest");           //its name
                
-  new G4PVPlacement(0,                       //no rotation
+  fChestPV = new G4PVPlacement(0,                       //no rotation
                     chest_pos,                    //at position
                     logicChest,             //its logical volume
                     "Chest",                //its name
@@ -241,8 +254,6 @@ G4VPhysicalVolume* JMQDetectorConstruction::Construct()
                     false,                   //no boolean operation
                     0,                       //copy number      
                     checkOverlaps);          //overlaps checking     //
-
-  fScoringVolume = logicChest;
 
   //
   //always return the physical World
