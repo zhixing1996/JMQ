@@ -73,10 +73,6 @@ class JMQEventAction : public G4UserEventAction
   private:
     JMQRunAction* fRunAction;
     G4double px=0, py=0, pz=0;
-//    G4double dx=0, dy=0, dz=0;
-    G4double rx=0, ry=0, rz=0;
-    G4double L=0., l=0.;
-    G4double sin_phi=0, cos_phi=0, sin_theta=0, cos_theta=0;
     G4double edep1=0., edep2=0.;
     G4double edep1_x=0, edep1_y=0, edep1_z=0;
     G4double edep2_x=0, edep2_y=0, edep2_z=0;
@@ -89,43 +85,25 @@ class JMQEventAction : public G4UserEventAction
 inline void JMQEventAction::RecordHead(G4double edep,
                 G4double point_in_x, G4double point_in_y, G4double point_in_z,
                 G4double point_out_x, G4double point_out_y, G4double point_out_z) {
-    rx = point_out_x - point_in_x;
-    ry = point_out_y - point_in_y;
-    rz = point_out_z - point_in_z;
-    L = std::sqrt(rx*rx+ry*ry+rz*rz);
-    l = std::sqrt(rx*rx+ry*ry);
-    sin_phi = l/L;
-    cos_phi = rz/L;
-    sin_theta = ry/l;
-    cos_theta = rx/l;
     edep1 += edep;
-    edep1_x += (point_out_x+point_in_x)/2*edep*sin_phi*cos_theta;
-    edep1_y += (point_out_y+point_in_y)/2*edep*sin_phi*sin_theta;
-    edep1_z += (point_out_z+point_in_z)/2*edep*cos_theta;
-    x_edep1 += edep*sin_phi*cos_theta;
-    y_edep1 += edep*sin_phi*sin_theta;
-    z_edep1 += edep*cos_theta;
+    edep1_x += (point_out_x+point_in_x)/2*edep;
+    edep1_y += (point_out_y+point_in_y)/2*edep;
+    edep1_z += (point_out_z+point_in_z)/2*edep;
+    x_edep1 += edep;
+    y_edep1 += edep;
+    z_edep1 += edep;
 }
 
 inline void JMQEventAction::RecordChest(G4double edep,
                 G4double point_in_x, G4double point_in_y, G4double point_in_z,
                 G4double point_out_x, G4double point_out_y, G4double point_out_z) {
-    rx = point_out_x - point_in_x;
-    ry = point_out_y - point_in_y;
-    rz = point_out_z - point_in_z;
-    L = std::sqrt(rx*rx+ry*ry+rz*rz);
-    l = std::sqrt(rx*rx+ry*ry);
-    sin_phi = l/L;
-    cos_phi = rz/L;
-    sin_theta = ry/l;
-    cos_theta = rx/l;
     edep2 += edep;
-    edep2_x += (point_out_x+point_in_x)/2*edep*sin_phi*cos_theta;
-    edep2_y += (point_out_y+point_in_y)/2*edep*sin_phi*sin_theta;
-    edep2_z += (point_out_z+point_in_z)/2*edep*cos_theta;
-    x_edep2 += edep*sin_phi*cos_theta;
-    y_edep2 += edep*sin_phi*sin_theta;
-    z_edep2 += edep*cos_theta;
+    edep2_x += (point_out_x+point_in_x)/2*edep;
+    edep2_y += (point_out_y+point_in_y)/2*edep;
+    edep2_z += (point_out_z+point_in_z)/2*edep;
+    x_edep2 += edep;
+    y_edep2 += edep;
+    z_edep2 += edep;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
