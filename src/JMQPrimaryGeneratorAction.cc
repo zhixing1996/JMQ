@@ -81,7 +81,7 @@ void JMQPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double energy = 0.662*MeV;
   fParticleGun->SetParticleEnergy(energy);
 
-  G4double size = 500.*mm; 
+  G4double size = 1000.*mm; 
   G4double x0 =  0.*mm;
   G4double y0 =  0.*mm;
   G4double z0 =  -(130.*mm + size);
@@ -89,9 +89,7 @@ void JMQPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
  
   G4double theta = acos(G4UniformRand());
-  G4cout<<"Check for theta1:" << theta<<G4endl;
   if( G4UniformRand() <  0.5 ){ theta =  3.1415926 - theta; };
-  G4cout<<"Check for theta2:" << theta<<G4endl;
   G4double phi = G4UniformRand() * 3.1415926 * 2;
 
   G4double dx = sin(theta)*cos(phi);
